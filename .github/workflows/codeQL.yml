@@ -6,10 +6,16 @@ on:
 
 jobs:
   CodeQL-Build:
+    name: CodeQL Build (${{ matrix.language }})
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        language:
+          - javascript-typescript
+          - python
+
     permissions:
-      # required for all workflows
       security-events: write
       actions: read
       contents: read
@@ -20,6 +26,8 @@ jobs:
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
